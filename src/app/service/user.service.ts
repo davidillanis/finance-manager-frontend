@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserEntity } from '../model/user-entity';
@@ -16,6 +16,15 @@ export class UserService {
   getList(): Observable<UserEntity[]> {
     let url = this.apiUrl + "/list";
     return this.httpClient.get<UserEntity[]>(`${url}`);
+  }
+
+  getUsersPaged(limit: number = 10, lastDocumentId?: string): Observable<UserEntity[]> {
+    let url = `${this.apiUrl}/list/paged`;
+    let params: HttpParams = new HttpParams().set('limit', limit);
+    if (lastDocumentId) {
+      params = params.set('lastDocumentId', lastDocumentId); 
+    }
+    return this.httpClient.get<UserEntity[]>(url, { params });
   }
 
   getUserById(id: string): Observable<UserEntity> {
