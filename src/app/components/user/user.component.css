@@ -1,0 +1,154 @@
+.container {
+    font-family: "Nunito", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 87vh;
+}
+
+.container-main {
+    display: grid;
+    grid-template-columns: 13% 87%;
+    width: 100%;
+    height: calc(90vh - 50px);
+    margin: 10px;
+    background: rgba(254, 254, 254, 0.5);
+    border-radius: 15px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+        0 0px 10px rgba(0, 0, 0, 0.25);
+}
+
+.logo {
+    display: none;
+}
+
+.main-menu {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: rgba(7, 20, 50, 0.5);
+    padding-top: 10px;
+    border-radius: 15px 0 0 15px;
+    font-family: "Roboto", sans-serif;
+}
+
+.main-menu h1 {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-align: center;
+    margin: 20px 0 30px;
+    color: #fff;
+    font-family: "Nunito", sans-serif;
+}
+
+.sidebar-menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.custom-line {
+    border: none;
+    height: 3px;
+    background-color: rgba(240, 240, 255, 0.2);
+    margin: 0px 0;
+}
+
+.button-option {
+    display: block;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    border: 0px;
+    background-color: transparent;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    color: rgba(255, 255, 255, 0.9);
+    /*
+          background-color: rgba(240, 240, 255, 0.2);
+          border: 2px solid rgba(10, 10, 100, 0.6);
+          color: rgba(0, 0, 0, 0.8);
+          */
+}
+
+.icon-button-option {
+    display: none;
+}
+
+.button-option:hover,
+.button-option:focus {
+    color: #e0e0e0;
+    background-color: rgba(10, 10, 100, 0.3);
+}
+
+.button-option:focus {
+    border-radius: 20px 0px 0px 20px;
+    border: 0px;
+    background-color: white;
+    color: black;
+
+}
+
+.section-content {
+    margin: 10px 5px 5px 10px;
+    overflow-y: auto;
+}
+
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(200, 200, 219, 0.7);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(118, 0, 118, 0.5);
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(118, 0, 118, 0.7);
+}
+
+
+@media (max-width: 1100px) {
+    .main-menu h1 {
+        display: none;
+    }
+
+    .logo {
+        display: block;
+        width: 30px;
+        margin: 20px auto;
+    }
+
+    .nav-text {
+        display: none;
+    }
+
+    .content {
+        grid-template-columns: 70% 30%;
+    }
+
+    .text-button-option {
+        display: none;
+    }
+
+    .icon-button-option {
+        display: block;
+        font-size: 20px;
+        padding: 8px;
+    }
+
+    .button-option {
+        padding: 5px;
+    }
+}

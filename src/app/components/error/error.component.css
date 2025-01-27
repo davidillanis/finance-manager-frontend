@@ -1,0 +1,62 @@
+.div-body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.error-container {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.1); 
+}
+
+.error-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+}
+
+.error-header h1 {
+    color: white;
+    background: linear-gradient(to right, #482ff7, #50a5f1);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.error-content h2 {
+    font-size: 3em;
+    margin: 20px 0;
+}
+
+.error-content p {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #482ff7;
+    /* Botón azul */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #50a5f1;
+}

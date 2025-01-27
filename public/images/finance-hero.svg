@@ -1,0 +1,56 @@
+<svg width="300" height="300" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" class="donut">
+  <circle class="donut-hole" cx="21" cy="21" r="15.9155" fill="#1e2730"></circle>
+  <circle class="donut-ring" cx="21" cy="21" r="15.9155" fill="transparent" stroke="#4a667a" stroke-width="3"></circle>
+
+  <!-- Segmento 1 -->
+  <circle
+    class="donut-segment"
+    cx="21"
+    cy="21"
+    r="15.9155"
+    fill="transparent"
+    stroke="#4caf50"
+    stroke-width="3"
+    stroke-dasharray="30 70"
+    stroke-dashoffset="25"
+  ></circle>
+
+  <!-- Segmento 2 -->
+  <circle
+    class="donut-segment"
+    cx="21"
+    cy="21"
+    r="15.9155"
+    fill="transparent"
+    stroke="#8bc34a"
+    stroke-width="3"
+    stroke-dasharray="20 80"
+    stroke-dashoffset="-5"
+  ></circle>
+
+  <!-- Segmento 3 -->
+  <circle
+    class="donut-segment"
+    cx="21"
+    cy="21"
+    r="15.9155"
+    fill="transparent"
+    stroke="#cddc39"
+    stroke-width="3"
+    stroke-dasharray="25 75"
+    stroke-dashoffset="-25"
+  ></circle>
+
+  <!-- Segmento 4 -->
+  <circle
+    class="donut-segment"
+    cx="21"
+    cy="21"
+    r="15.9155"
+    fill="transparent"
+    stroke="#ffc107"
+    stroke-width="3"
+    stroke-dasharray="15 85"
+    stroke-dashoffset="-50"
+  ></circle>
+</svg>

@@ -1,0 +1,133 @@
+/* Variables de colores */
+:root {
+  --primary-color: #4caf50;
+  --secondary-color: #24303a;
+  --text-color: #ffffff;
+  --background-color: #1e2730;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+.welcome-container {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+header.welcome-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.header-content {
+  max-width: 600px;
+  text-align: center;
+}
+
+.header-content h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.header-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.header-image {
+  width: 400px;
+  max-width: 100%;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 40px 0;
+}
+
+.feature-card {
+  background-color: var(--secondary-color);
+  border-radius: 12px;
+  padding: 20px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.feature-card img {
+  width: 60px;
+  margin-bottom: 10px;
+}
+
+.feature-card h2 {
+  color: var(--primary-color);
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.cta-button {
+  background-color: rgba(139, 195, 74,0.1);
+  color: var(--text-color);
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: rgba(74, 171, 195, 0.5);
+}
+
+/* Estilos para el gráfico */
+.chart-section {
+  margin-top: 40px;
+}
+
+.chart-section h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.chart {
+  width: 300px;
+  height: 300px;
+  margin: 20px auto;
+  position: relative;
+  background: conic-gradient(var(--color1) calc(var(--value1) * 1%),
+      var(--color2) calc(var(--value1) * 1% + var(--value2) * 1%),
+      var(--color3) calc(var(--value1) * 1% + var(--value2) * 1% + var(--value3) * 1%));
+  border-radius: 50%;
+}
+
+.slice {
+  width: 100%;
+  height: 100%;
+  clip-path: circle(50%);
+  position: absolute;
+  background: conic-gradient(transparent calc(var(--value) * 1%),
+      var(--color) 0);
+  transform: rotate(calc(var(--value) * 3.6deg));
+}
+
+.circle-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text-color);
+}

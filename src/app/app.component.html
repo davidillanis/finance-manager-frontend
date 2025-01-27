@@ -1,87 +1,98 @@
 <div class="container">
   <nav class="navbar">
-      <div class="nav-brand">
-          <div class="logo">
-              <span class="logo-text">Premium</span>
-              <div class="logo-shine"></div>
-          </div>
+    <div class="nav-brand">
+      <div class="logo">
+        <a href="/main"><span class="logo-text">Premium</span></a>
+        <div class="logo-shine"></div>
       </div>
+    </div>
 
-      <div class="nav-links">
-          <a href="#" class="nav-link active">
-              <span>Home</span>
-              <div class="link-effect"></div>
-          </a>
-          <a href="#" class="nav-link">
-              <span>Products</span>
-              <div class="link-effect"></div>
-          </a>
-          <a href="#" class="nav-link">
-              <span>Services</span>
-              <div class="link-effect"></div>
-          </a>
-          <a href="#" class="nav-link">
-              <span>About</span>
-              <div class="link-effect"></div>
-          </a>
-          <a href="#" class="nav-link">
-              <span>Contact</span>
-              <div class="link-effect"></div>
-          </a>
-      </div>
+    <div class="nav-links">
+      <a href="/user" class="nav-link active">
+        <span>Home</span>
+        <div class="link-effect"></div>
+      </a>
+      <a href="#" class="nav-link">
+        <span>Products</span>
+        <div class="link-effect"></div>
+      </a>
+      <a href="#" class="nav-link">
+        <span>Services</span>
+        <div class="link-effect"></div>
+      </a>
+      <a href="#" class="nav-link">
+        <span>About</span>
+        <div class="link-effect"></div>
+      </a>
+      <a href="#" class="nav-link">
+        <span>Contact</span>
+        <div class="link-effect"></div>
+      </a>
+    </div>
 
-      <div class="nav-actions">
-          <button class="action-btn">
-              <div class="btn-text">Sign In</div>
-              <div class="btn-effect"></div>
-          </button>
-      </div>
+    <div class="nav-actions">
+      @if (!isLoggedIn) {
+        <button class="action-btn" routerLink="/login">
+          <div class="btn-text">Login</div>
+          <div class="btn-effect"></div>
+        </button>
+      }@else {
+        <button class="action-btn" (click)="logOut()">
+          <div class="btn-text">Exit</div>
+          <div class="btn-effect"></div>
+        </button>
+      }
 
-      <button class="mobile-toggle" (click)="openClose()">
-          <span></span>
-          <span></span>
-          <span></span>
-      </button>
+    </div>
+
+    <button class="mobile-toggle" (click)="openClose()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
 
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="miDiv">
-      <div class="menu-header">
-          <div class="logo">
-              <span class="logo-text">Premium</span>
-          </div>
-          <button class="close-menu">
-              <span class="close-icon"></span>
-          </button>
+    <div class="menu-header">
+      <div class="logo">
+        <span class="logo-text">Premium</span>
       </div>
-      <div class="menu-links">
-          <a href="#" class="menu-link active">
-              <span>Home</span>
-          </a>
-          <a href="#" class="menu-link">
-              <span>Products</span>
-          </a>
-          <a href="#" class="menu-link">
-              <span>Services</span>
-          </a>
-          <a href="#" class="menu-link">
-              <span>About</span>
-          </a>
-          <a href="#" class="menu-link">
-              <span>Contact</span>
-          </a>
-      </div>
-      <div class="menu-footer">
-          <button class="mobile-action-btn">
-              <span>Sign In</span>
-          </button>
-      </div>
+      <button class="close-menu">
+        <span class="close-icon"></span>
+      </button>
+    </div>
+    <div class="menu-links">
+      <a href="#" class="menu-link active">
+        <span>Home</span>
+      </a>
+      <a href="#" class="menu-link">
+        <span>Products</span>
+      </a>
+      <a href="#" class="menu-link">
+        <span>Services</span>
+      </a>
+      <a href="#" class="menu-link">
+        <span>About</span>
+      </a>
+      <a href="#" class="menu-link">
+        <span>Contact</span>
+      </a>
+    </div>
+    <div class="menu-footer">
+      @if (!isLoggedIn) {
+      <button class="mobile-action-btn" routerLink="/login">
+        <span>Sign In</span>
+      </button>
+      }@else {
+      <button class="mobile-action-btn" (click)="logOut()">
+        <span>Exit</span>
+      </button>
+      }
+    </div>
   </div>
 </div>
 
 <div class="content">
-  <h1>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Esse autem dolor non aspernatur molestias quas suscipit nesciunt corporis, alias minus natus amet temporibus ducimus. Ratione iste expedita doloribus neque fugiat.</h1>
-  <!--content-->
+  <router-outlet />
 </div>
-
-<router-outlet />

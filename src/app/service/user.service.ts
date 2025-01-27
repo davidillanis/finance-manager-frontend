@@ -32,8 +32,8 @@ export class UserService {
     return this.httpClient.get<UserEntity>(url);
   }
 
-  createUser(user: any): Observable<any> {
-    return this.httpClient.post<any>(`${this.apiUrl}/create`, user);
+  createUser(user: UserEntity, uid:string): Observable<any> {
+    return this.httpClient.post<any>(`${this.apiUrl}/create?uid=${uid}`, user);
   }
 
   updateUser(user: any): Observable<any> {

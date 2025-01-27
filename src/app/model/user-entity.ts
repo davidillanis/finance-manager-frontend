@@ -1,11 +1,8 @@
 export interface UserEntity {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: string;
-    imageUrl: string;
-    registrationDate: string;
-    enabled: boolean;
-  }
-  
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  imageUrl: string | null;
+  registrationDate: string | null;
+  role:string;
+}

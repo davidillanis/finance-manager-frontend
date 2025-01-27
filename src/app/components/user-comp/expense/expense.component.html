@@ -1,0 +1,45 @@
+<div class="header">
+    <h1 class="header-title">this Expenses</h1>
+</div>
+<div class="contenedor">
+    <div class="boton-modal" style="background-color: transparent;">
+        <button class="button text-light">Nuevo</button>
+    </div>
+</div>
+<div class="search-container">
+    <input type="text" class="search-input" placeholder="Search..." />
+    <button class="search-button">🔍</button>
+</div>
+@if (isLoading) {
+  <p>Cargando...</p>
+}
+<section class="table-section">
+    <table class="table">
+        <thead style="position: sticky; top: 0px; background-color: rgb(255, 252, 252); z-index: 100;">
+            <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>amount</th>
+                <th>category</th>
+                <th>payMethod</th>
+                <th>action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of expenseList; track $index) {
+              <tr>
+                <td class="text-dark">{{$index+1}}</td>
+                <td class="text-dark">{{formatDate(item.date).slice(0, 10)}}</td>
+                <td class="text-dark">{{item.amount}}</td>
+                <td class="text-dark">{{item.category}}</td>
+                <td class="text-dark">{{item.payMethod}}</td>
+                <td>
+                    <button class="button-edit"><img src="/images/edit.svg" class="icon-button"></button>
+                    <button class="button-delete"><img src="/images/delete.svg" class="icon-button"></button>
+                    <button class="button-info"><img src="/images/info.svg" class="icon-button"></button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</section>
