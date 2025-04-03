@@ -2,22 +2,21 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
-import { BillsEntity } from '../model/bills-entity';
 import { AuthService } from './auth.service';
-import { AlertService } from './alert.service';
+import { DebtsEntity } from '../model/debts-entity';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ExpenseService {
+export class DebtsService {
 
-  private apiUrl = environment.BASE_API + '/bills';
-  private cache$: BehaviorSubject<BillsEntity[] | null> = new BehaviorSubject<BillsEntity[] | null>(null);
+  private apiUrl = environment.BASE_API + '/debts';
+  private cache$: BehaviorSubject<DebtsEntity[] | null> = new BehaviorSubject<DebtsEntity[] | null>(null);
 
-  constructor(private http: HttpClient, private authService: AuthService, private alertService:AlertService) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
-  list(userId: string, token: string, limit: number = 10, usingCache: boolean = true): Observable<BillsEntity[]> {
+  list(userId: string, token: string, limit: number = 10, usingCache: boolean = true): Observable<DebtsEntity[]> {
     const cachedData = this.cache$.value;
     if (cachedData && usingCache) {
       return of(cachedData);
@@ -26,7 +25,7 @@ export class ExpenseService {
     let url = `${this.apiUrl}/list?userId=${userId}&limit=${limit}`;
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-    return this.http.get<BillsEntity[]>(url, { headers }).pipe(
+    return this.http.get<DebtsEntity[]>(url, { headers }).pipe(
       tap(data => this.cache$.next(data)),
       catchError(error => {
         console.error("Error fetching bills:", error)
@@ -36,11 +35,11 @@ export class ExpenseService {
     );
   }
 
-  getById(userId: string, id: string, token: string): Observable<BillsEntity> {
+  getById(userId: string, id: string, token: string): Observable<DebtsEntity> {
     const params = new HttpParams().set('userId', userId);
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-    return this.http.get<BillsEntity>(`${this.apiUrl}/byId/${id}`, { params, headers: headers });
+    return this.http.get<DebtsEntity>(`${this.apiUrl}/byId/${id}`, { params, headers: headers });
   }
 
 
@@ -53,14 +52,14 @@ export class ExpenseService {
     return this.http.get<string[]>(url, { params, headers: headers });
   }
 
-  create(userId: string, token: string, data: BillsEntity): Observable<any> {
+  create(userId: string, token: string, data: DebtsEntity): Observable<any> {
     const params = new HttpParams().set('userId', userId);
     const headers = { 'Authorization': `Bearer ${token}` };
 
-    return this.http.post(`${this.apiUrl}/create`, data, { params, headers });
+    return this.http.post(`${this.apiUrl}/create`, data, { params, headers: headers });
   }
 
-  update(userId: string, id:string, token: string, data: BillsEntity): Observable<any> {
+  update(userId: string, id:string, token: string, data: DebtsEntity): Observable<any> {
     const params = new HttpParams().set('userId', userId);
     const headers = { 'Authorization': `Bearer ${token}` };
 

@@ -1,0 +1,88 @@
+<div class="modal-container" style="text-align: center">
+  <h2 mat-dialog-title>New Expense {{ getCurrentDate() }}</h2>
+  <mat-dialog-content class="mat-typography">
+    <mat-form-field floatLabel="always">
+      <mat-label>Amount</mat-label>
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="amount"
+        class="example-right-align"
+        placeholder="0"
+        min="0"
+      />
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+    <br />
+
+    <mat-form-field>
+      <mat-label>Category</mat-label>
+      <mat-select
+        [(value)]="selectedOption"
+        (selectionChange)="onSelectionChange($event)"
+      >
+        @for (option of options; track $index) {
+        <mat-option [value]="option"> {{ option }} </mat-option>
+        }
+        <mat-option (click)="addNewOption()">
+          <span>Add new ...</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    &nbsp; @if (isEditing) {
+    <mat-form-field>
+      <mat-label>Nueva opción</mat-label>
+      <input
+        matInput
+        [(ngModel)]="newOption"
+        (blur)="saveOption()"
+        (keyup.enter)="saveOption()"
+      />
+    </mat-form-field>
+    }
+    <br />
+
+    <mat-form-field>
+      <mat-label>Pay Method</mat-label>
+      <mat-select
+        [(value)]="selectedPayMethod"
+        (selectionChange)="onPayMethodSelectionChange($event)"
+      >
+        @for (method of payMethods; track $index) {
+        <mat-option [value]="method"> {{ method }} </mat-option>
+        }
+        <mat-option (click)="addNewPayMethod()">
+          <span>Add new ...</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    &nbsp; @if (isEditingPayMethod) {
+    <mat-form-field>
+      <mat-label>Nuevo método</mat-label>
+      <input
+        matInput
+        [(ngModel)]="newPayMethod"
+        (blur)="savePayMethod()"
+        (keyup.enter)="savePayMethod()"
+      />
+    </mat-form-field>
+    }
+    <br />
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput [(ngModel)]="description"></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+      mat-button
+      [mat-dialog-close]="{'amount':amount, 'category':selectedOption, 'payMethod':selectedPayMethod, 'description':description}"
+      [disabled]="!isDisabled()"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</div>

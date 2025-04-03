@@ -1,1 +1,54 @@
-<p>income works!</p>
+<div class="header">
+  <h1 class="header-title">This Incomes</h1>
+</div>
+<div class="contenedor">
+  <div class="boton-modal" style="background-color: transparent;">
+      <button mat-button color="accent" (click)="add()">New Income</button>
+  </div>
+</div>
+<div class="search-container">
+  <input type="text" class="search-input" placeholder="Search..." />
+  <button class="search-button">🔍</button>
+</div>
+@if (isLoading) {
+<p>Cargando...</p>
+}
+<section class="table-section">
+  <table class="table">
+      <thead style="position: sticky; top: 0px; background-color: rgb(255, 252, 252); z-index: 100;">
+          <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>amount</th>
+              <th>category</th>
+              <th>origin</th>
+              <th>action</th>
+          </tr>
+      </thead>
+      <tbody>
+          @for (item of incomeList; track $index) {
+            <tr>
+              <td class="text-dark">{{$index+1}}</td>
+              <td class="text-dark">{{formatDate(item.date).slice(0, 10)}}</td>
+              <td class="text-dark">{{item.amount}}</td>
+              <td class="text-dark">{{item.category}}</td>
+              <td class="text-dark">{{item.origin}}</td>
+              <td>
+                  <button class="button-edit" (click)="update(item.id)"><img src="/images/edit.svg" class="icon-button"></button>
+                  <button class="button-delete" (click)="delete(item.id)"><img src="/images/delete.svg" class="icon-button"></button>
+                  <button class="button-info" (click)="info(item.id)"><img src="/images/info.svg" class="icon-button"></button>
+              </td>
+          </tr>
+          }
+      </tbody>
+  </table>
+</section>
+
+<br><br>
+
+<app-pie-chart
+[single]="customSingle"
+[names]="['category','origin', 'date']"
+[values]="['amount']"
+(selectionChanged)="onSelectionChanged($event)"
+></app-pie-chart>

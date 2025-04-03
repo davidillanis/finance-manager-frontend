@@ -1,0 +1,71 @@
+<div class="modal-container" style="text-align: center">
+  <h2 mat-dialog-title>New Expense {{ getCurrentDate() }}</h2>
+  <mat-dialog-content class="mat-typography">
+    <mat-form-field floatLabel="always">
+      <mat-label>Amount</mat-label>
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="amount"
+        class="example-right-align"
+        placeholder="0"
+        min="0"
+      />
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+    <br />
+
+    <mat-form-field>
+      <mat-label>Creditor</mat-label>
+      <mat-select
+        [(value)]="selectedCreditor"
+        (selectionChange)="onSelectionChange($event)"
+      >
+        @for (option of creditors; track $index) {
+        <mat-option [value]="option"> {{ option }} </mat-option>
+        }
+        <mat-option (click)="addNewOption()">
+          <span>Add new ...</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    &nbsp; @if (isEditingCreditor) {
+    <mat-form-field>
+      <mat-label>Nueva opción</mat-label>
+      <input
+        matInput
+        [(ngModel)]="newCreditor"
+        (blur)="saveOption()"
+        (keyup.enter)="saveOption()"
+      />
+    </mat-form-field>
+    }
+    <br />
+
+    <mat-form-field>
+      <mat-label>dateMaturity</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="dateMaturity">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <br /><br>
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput [(ngModel)]="description"></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+      mat-button
+      [mat-dialog-close]="{'amount':amount, 'creditor':selectedCreditor, 'description':description, 'dateMaturity':dateMaturity}"
+      [disabled]="!isDisabled()"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</div>

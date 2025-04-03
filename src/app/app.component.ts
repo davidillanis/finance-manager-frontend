@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './service/auth.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule],
+  imports: [RouterOutlet, RouterModule, MatProgressSpinnerModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  public static viewSpinner=false;
   constructor(
     private authService:AuthService,
   ){}
@@ -31,4 +33,7 @@ export class AppComponent {
   }
 
 
+  get viewSpinner(){
+    return AppComponent.viewSpinner;
+  }
 }

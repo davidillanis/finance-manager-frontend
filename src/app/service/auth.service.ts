@@ -6,6 +6,7 @@ import { UserEntity } from '../model/user-entity';
 import { FirebaseUserDTO } from '../util/dto/firebase-user-dto';
 
 import { getAdditionalUserInfo, getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { SweetAlertIcon } from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -112,6 +113,13 @@ export class AuthService {
     return this.firebaseAuthenticationService.signOut().then(() =>{
       localStorage.removeItem('user');
       this.alertService.successfulCallback("Log Out", ()=>location.reload());
+    });
+  }
+
+  logOutConfig(title: string,text: string,icon: SweetAlertIcon,color: string, confirmButtonText: string = 'Continuar',timer: number = 1600, onClose: () => void = () => { } ){
+    return this.firebaseAuthenticationService.signOut().then(() =>{
+      localStorage.removeItem('user');
+      this.alertService.alertCallback(title, text, icon, color, confirmButtonText, timer, onClose);
     });
   }
 

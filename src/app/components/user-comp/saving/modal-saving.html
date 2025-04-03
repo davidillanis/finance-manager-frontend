@@ -1,0 +1,61 @@
+<div class="modal-container" style="text-align: center">
+  <h2 mat-dialog-title>New Saving {{ getCurrentDate() }}</h2>
+  <mat-dialog-content class="mat-typography">
+    <mat-form-field floatLabel="always">
+      <mat-label>Amount</mat-label>
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="amount"
+        class="example-right-align"
+        placeholder="0"
+        min="0"
+      />
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+    <br />
+
+    <mat-form-field>
+      <mat-label>Account Platform</mat-label>
+      <mat-select
+        [(value)]="selectedAccountPlatform"
+        (selectionChange)="onSelectionChange($event)"
+      >
+        @for (option of accountPlatformList; track $index) {
+        <mat-option [value]="option"> {{ option }} </mat-option>
+        }
+        <mat-option (click)="addNewOption()">
+          <span>Add new ...</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    &nbsp; @if (isEditingAccountPlatform) {
+    <mat-form-field>
+      <mat-label>new option</mat-label>
+      <input
+        matInput
+        [(ngModel)]="newAccountPlatform"
+        (blur)="saveOption()"
+        (keyup.enter)="saveOption()"
+      />
+    </mat-form-field>
+    }
+    <br />
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput [(ngModel)]="description"></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+      mat-button
+      [mat-dialog-close]="{'amount':amount, 'accountPlatform':selectedAccountPlatform, 'description':description}"
+      [disabled]="!isDisabled()"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,49 @@
+<div class="chart-container">
+  <h2>Circular Graphic Expenses</h2>
+
+  <div class="container-elements">
+    <div class="elements">
+      <h2>Graphic Config</h2>
+      <div class="graphic-config">
+        <mat-form-field>
+          <mat-label>Name Select</mat-label>
+          <mat-select
+            [(value)]="nameSelected"
+            (selectionChange)="onNameSelected($event)"
+          >
+            @for (name of names; track $index) {
+            <mat-option [value]="name">{{ name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+          <mat-label>Value Select</mat-label>
+          <mat-select
+            [(value)]="valueSelected"
+            (selectionChange)="onValueSelected($event)"
+          >
+            @for (value of values; track $index) {
+            <mat-option [value]="value">{{ value }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="elements">
+      <ngx-charts-pie-chart
+        [view]="view"
+        [results]="single"
+        [gradient]="gradient"
+        [labels]="showLabels"
+        [doughnut]="doughnut"
+        [legend]="legend"
+        [animations]="animations"
+        [arcWidth]="arcWidth"
+      >
+      </ngx-charts-pie-chart>
+    </div>
+  </div>
+
+  <p class="chart-footer">dynamically updated data</p>
+</div>
