@@ -5,6 +5,7 @@ import { IncomeComponent } from '../user-comp/income/income.component';
 import { SavingComponent } from '../user-comp/saving/saving.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExpenseComponent } from '../user-comp/expense/expense.component';
+import { HomeComponent } from '../user-comp/home/home.component';
 
 @Component({
   selector: 'app-user',
@@ -15,11 +16,13 @@ import { ExpenseComponent } from '../user-comp/expense/expense.component';
 })
 export class UserComponent implements OnInit {
 
+  protected homeComponent=HomeComponent;
   protected expensesComponent = ExpenseComponent;
   protected debtsComponent = DebtsComponent;
   protected incomeComponent = IncomeComponent;
   protected savingComponent = SavingComponent;
 
+  @ViewChild('homeTemplate', { static: true }) homeTemplate!: TemplateRef<any>;
   @ViewChild('expensesTemplate', { static: true }) expensesTemplate!: TemplateRef<any>;
   @ViewChild('debtsTemplate', { static: true }) debtsTemplate!: TemplateRef<any>;
   @ViewChild('incomeTemplate', { static: true }) incomeTemplate!: TemplateRef<any>;
@@ -35,6 +38,9 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.fragment.subscribe(fragment=>{
       switch (fragment) {
+        case 'home':
+          this.selectedTemplate = this.homeTemplate;
+          break;
         case 'expenses':
           this.selectedTemplate = this.expensesTemplate;
           break;
@@ -48,7 +54,7 @@ export class UserComponent implements OnInit {
           this.selectedTemplate = this.debtsTemplate;
           break
         default:
-          this.selectedTemplate = this.expensesTemplate;
+          this.selectedTemplate = this.homeTemplate;
           break;
       }
     });

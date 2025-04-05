@@ -1,53 +1,61 @@
 <div class="container">
-    <div class="container-main">
-        <div class="main-menu">
-            <h1>Dashboard</h1>
-            <img class="logo" src="/images/logo.svg" alt="" />
-            <hr class="custom-line">
-            <ul class="sidebar-menu">
-                <li>
-                    <button class="button-option" (click)="route('expenses')">
-                        <span class="text-button-option">Expenses</span>
-                        <samp class="icon-button-option">🧾</samp>
-                    </button>
-                </li>
-                <li>
-                    <button class="button-option" (click)="route('debts')">
-                        <span class="text-button-option">Debts</span>
-                        <samp class="icon-button-option">💸</samp>
-                    </button>
-                </li>
-                <li>
-                    <button class="button-option" (click)="route('income')">
-                        <span class="text-button-option">Income</span>
-                        <samp class="icon-button-option">💵</samp>
-                    </button>
-                </li>
-                <li>
-                    <button class="button-option" (click)="route('saving')">
-                        <span class="text-button-option">Saving</span>
-                        <samp class="icon-button-option">🏦</samp>
-                    </button>
-                </li>
-            </ul>
-        </div>
-        <div class="section-content">
-            <ng-container [ngTemplateOutlet]="selectedTemplate"></ng-container>
-        </div>
+  <div class="container-main">
+    <div class="main-menu">
+      <h1>Dashboard</h1>
+      <img class="logo" src="/images/logo.svg" alt="" />
+      <hr class="custom-line" />
+      <ul class="sidebar-menu">
+        <li>
+          <button class="button-option" (click)="route('home')">
+            <span class="text-button-option">Home</span>
+            <samp class="icon-button-option">🏠</samp>
+          </button>
+        </li>
+        <li>
+          <button class="button-option" (click)="route('income')">
+            <span class="text-button-option">Income</span>
+            <samp class="icon-button-option">💵</samp>
+          </button>
+        </li>
+        <li>
+          <button class="button-option" (click)="route('expenses')">
+            <span class="text-button-option">Expenses</span>
+            <samp class="icon-button-option">🧾</samp>
+          </button>
+        </li>
+        <li>
+          <button class="button-option" (click)="route('debts')">
+            <span class="text-button-option">Debts</span>
+            <samp class="icon-button-option">💸</samp>
+          </button>
+        </li>
+
+        <li>
+          <button class="button-option" (click)="route('saving')">
+            <span class="text-button-option">Saving</span>
+            <samp class="icon-button-option">🏦</samp>
+          </button>
+        </li>
+      </ul>
     </div>
+    <div class="section-content">
+      <ng-container [ngTemplateOutlet]="selectedTemplate"></ng-container>
+    </div>
+  </div>
 </div>
 
-
-
+<ng-template #homeTemplate>
+  <ng-container [ngComponentOutlet]="homeComponent"></ng-container>
+</ng-template>
 <ng-template #expensesTemplate>
-    <ng-container [ngComponentOutlet]="expensesComponent"></ng-container>
+  <ng-container [ngComponentOutlet]="expensesComponent"></ng-container>
 </ng-template>
 <ng-template #debtsTemplate>
-    <ng-container [ngComponentOutlet]="debtsComponent"></ng-container>
+  <ng-container [ngComponentOutlet]="debtsComponent"></ng-container>
 </ng-template>
 <ng-template #incomeTemplate>
-    <ng-container [ngComponentOutlet]="incomeComponent"></ng-container>
+  <ng-container [ngComponentOutlet]="incomeComponent"></ng-container>
 </ng-template>
 <ng-template #savingTemplate>
-    <ng-container [ngComponentOutlet]="savingComponent"></ng-container>
+  <ng-container [ngComponentOutlet]="savingComponent"></ng-container>
 </ng-template>
