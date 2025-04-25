@@ -3,10 +3,12 @@ import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import { loginGuard } from './core/login.guard';
 import { AuthGuard } from './core/auth.guard';
+import { TestComponent } from './components/test/test.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'main', component: MainComponent },
+    { path: 'test', component: TestComponent },
     { path: 'login',
       component: LoginComponent ,
       canActivate:[loginGuard]

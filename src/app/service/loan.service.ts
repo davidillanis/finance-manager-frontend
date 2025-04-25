@@ -5,13 +5,11 @@ import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { DebtsEntity } from '../model/debts-entity';
 
-
 @Injectable({
   providedIn: 'root'
 })
-export class DebtsService {
-
-  private apiUrl = environment.BASE_API + '/debts';
+export class LoanService {
+private apiUrl = environment.BASE_API + '/loan';
   private cache$: BehaviorSubject<DebtsEntity[] | null> = new BehaviorSubject<DebtsEntity[] | null>(null);
 
   constructor(private http: HttpClient, private authService: AuthService) { }
@@ -71,6 +69,4 @@ export class DebtsService {
     const headers = { 'Authorization': `Bearer ${token}` };
     return this.http.delete(`${this.apiUrl}/delete/${id}`, { params, headers });
   }
-
-
 }

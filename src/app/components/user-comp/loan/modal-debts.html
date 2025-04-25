@@ -1,26 +1,20 @@
 <div class="modal-container" style="text-align: center">
   <h2 mat-dialog-title>New Expense {{ getCurrentDate() }}</h2>
   <mat-dialog-content class="mat-typography">
+
+    <app-input-image (photoChange)="onPhotoChange($event)" [previewUrl]="urlImage"></app-input-image>
+
+
     <mat-form-field floatLabel="always">
       <mat-label>Amount</mat-label>
-      <input
-        matInput
-        type="number"
-        [(ngModel)]="amount"
-        class="example-right-align"
-        placeholder="0"
-        min="0"
-      />
+      <input matInput type="number" [(ngModel)]="amount" class="example-right-align" placeholder="0" min="0" />
       <span matTextPrefix>$&nbsp;</span>
     </mat-form-field>
     <br />
 
     <mat-form-field>
       <mat-label>Creditor</mat-label>
-      <mat-select
-        [(value)]="selectedCreditor"
-        (selectionChange)="onSelectionChange($event)"
-      >
+      <mat-select [(value)]="selectedCreditor" (selectionChange)="onSelectionChange($event)">
         @for (option of creditors; track $index) {
         <mat-option [value]="option"> {{ option }} </mat-option>
         }
@@ -32,12 +26,7 @@
     &nbsp; @if (isEditingCreditor) {
     <mat-form-field>
       <mat-label>Nueva opción</mat-label>
-      <input
-        matInput
-        [(ngModel)]="newCreditor"
-        (blur)="saveOption()"
-        (keyup.enter)="saveOption()"
-      />
+      <input matInput [(ngModel)]="newCreditor" (blur)="saveOption()" (keyup.enter)="saveOption()" />
     </mat-form-field>
     }
     <br />
@@ -50,7 +39,8 @@
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <br /><br>
+    <br/>
+
 
     <mat-form-field>
       <mat-label>Description</mat-label>
@@ -60,11 +50,9 @@
 
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button
-      mat-button
-      [mat-dialog-close]="{'amount':amount, 'creditor':selectedCreditor, 'description':description, 'dateMaturity':dateMaturity}"
-      [disabled]="!isDisabled()"
-    >
+    <button mat-button
+      [mat-dialog-close]="{'amount':amount, 'creditor':selectedCreditor, 'description':description, 'dateMaturity':dateMaturity, 'file':file}"
+      [disabled]="!isDisabled()">
       Save
     </button>
   </mat-dialog-actions>

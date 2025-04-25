@@ -6,11 +6,11 @@ import { SavingsEntity } from '../../../model/savings-entity';
 import { AuthService } from '../../../service/auth.service';
 import { PrincipalService } from '../../../service/principal.service';
 import { PieChartComponent } from "../../../widgets/pie-chart/pie-chart.component";
-
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PieChartComponent],
+  imports: [PieChartComponent, MatProgressBarModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit{
   protected userUid = "";
   protected token = "";
   protected limit = 100;
+  protected isLoading:boolean=false;
 
   incomesList:IncomeEntity[]=[];
   expenseList:BillsEntity[]=[];
@@ -32,7 +33,11 @@ export class HomeComponent implements OnInit{
   ngOnInit(): void {
     this.userUid = this.authService.getUser()?.uid + "";
     this.token = this.authService.getUser()?.stsTokenManager.accessToken + "";
-    this.principalService.accumulatedOfAll(this.userUid, this.token).subscribe(t=>this.customSingle=t);
+    this.isLoading=true;
+    this.principalService.accumulatedOfAll(this.userUid, this.token, false).subscribe(t=>{
+      this.customSingle=t;
+      this.isLoading=false;
+    });
 
   }
 

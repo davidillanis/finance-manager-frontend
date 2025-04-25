@@ -5,4 +5,5 @@ export interface DebtsEntity {
     amount:number;
     creditor:string;
     dateMaturity:string;
+    imageUrl:string;
 }

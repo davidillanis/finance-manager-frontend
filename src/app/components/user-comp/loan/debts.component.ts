@@ -14,9 +14,11 @@ import { AppComponent } from '../../../app.component';
 import { AlertService } from '../../../service/alert.service';
 import { ModalService } from '../../../service/modal.service';
 import { DebtsEntity } from '../../../model/debts-entity';
-import { DebtsService } from '../../../service/debts.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { LoanService } from '../../../service/loan.service';
+import { InputImageComponent } from "../../../widgets/input-image/input-image.component";
+import { FileService } from '../../../service/file.service';
 
 @Component({
   selector: 'app-debts',
@@ -36,24 +38,26 @@ export class DebtsComponent {
   readonly dialog = inject(MatDialog);
 
   constructor(
-    private debtsService: DebtsService,
+    private loanService: LoanService,
     private authService: AuthService,
     private alertService: AlertService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private fileService:FileService
   ) { }
 
   ngOnInit(): void {
     this.userUid = this.authService.getUser()?.uid + "";
     this.token = this.authService.getUser()?.stsTokenManager.accessToken + "";
 
-    this.debtsService.setValuesPerField(this.userUid, "creditor", this.token).subscribe(t => this.creditorList = t?t:[])
+    this.loanService.setValuesPerField(this.userUid, "creditor", this.token).subscribe(t => this.creditorList = t?t:[])
     this.loadDebts();
   }
 
   loadDebts(usingCache: boolean = true): void {
+
     this.isLoading = true;
 
-    this.debtsService.list(this.userUid, this.token, this.limit, usingCache).subscribe(
+    this.loanService.list(this.userUid, this.token, this.limit, usingCache).subscribe(
       (data) => {
         this.debtsList = data;
         this.updateCustomSingle();
@@ -98,34 +102,40 @@ export class DebtsComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        let debtsEntity: DebtsEntity = {
-          id: '',
-          date: '',
-          description: result.description,
-          amount: result.amount,
-          creditor: result.creditor,
-          dateMaturity: AppUtils.formatDate(result.dateMaturity).slice(0, 10)
-        }
+        AppComponent.setViewSpinner(true);
+        this.fileService.uploadFile2(result.file).url$.subscribe(url=>{
+          let debtsEntity: DebtsEntity = {
+            id: '',
+            date: '',
+            description: result.description,
+            amount: result.amount,
+            creditor: result.creditor,
+            dateMaturity: AppUtils.formatDate(result.dateMaturity).slice(0, 10),
+            imageUrl: url
+          }
 
-        AppComponent.viewSpinner = true;
-        this.debtsService.create(this.userUid, this.token, debtsEntity).subscribe(t => {
-          AppComponent.viewSpinner = false;
-          if (t.isSuccess) {
-            this.alertService.successful("add new expense");
-            this.loadDebts(false);
-          }
-          else {
-            this.alertService.warning("Error in saving data")
-          }
-        });
+          this.loanService.create(this.userUid, this.token, debtsEntity).subscribe(t => {
+            if (t.isSuccess) {
+            AppComponent.setViewSpinner(false);
+
+              this.alertService.successful("add new expense");
+              this.loadDebts(false);
+            }
+            else {
+              this.alertService.warning("Error in saving data")
+            }
+          });
+        })
       }
     });
   }
 
   update(expenseId: string) {
-    AppComponent.viewSpinner = true;
-    this.debtsService.getById(this.userUid, expenseId, this.token).subscribe(debts => {
-      AppComponent.viewSpinner = false;
+    AppComponent.setViewSpinner(true);
+
+    this.loanService.getById(this.userUid, expenseId, this.token).subscribe(debts => {
+      AppComponent.setViewSpinner(false);
+
       const dialogRef = this.dialog.open(ModalWidgets, {
         data: {
           category: this.creditorList,
@@ -134,39 +144,50 @@ export class DebtsComponent {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        if (result != undefined) {
-          let debtsEntity: DebtsEntity = {
-            id: '',
-            date: '',
-            description: result.description,
-            amount: result.amount,
-            creditor: result.creditor,
-            dateMaturity: AppUtils.formatDate(result.dateMaturity).slice(0, 10)
-          }
+        if (result) {
+          AppComponent.setViewSpinner(true);
 
-          AppComponent.viewSpinner = true;
-          this.debtsService.update(this.userUid, expenseId, this.token, debtsEntity).subscribe(t => {
-            AppComponent.viewSpinner = false;
-            if (t.isSuccess) {
-              this.alertService.successful("update expense");
-              this.loadDebts(false);
-            }
-            else {
-              this.alertService.warning("Error in update data")
-            }
-          });
+          const updateDebtsEntity = (imageUrl: string) => {
+            const debtsEntity: DebtsEntity = {
+              id: '',
+              date: '',
+              description: result.description,
+              amount: result.amount,
+              creditor: result.creditor,
+              dateMaturity: AppUtils.formatDate(result.dateMaturity).slice(0, 10),
+              imageUrl: imageUrl
+            };
+
+            this.loanService.update(this.userUid, expenseId, this.token, debtsEntity).subscribe(response => {
+              AppComponent.setViewSpinner(false);
+
+              if (response.isSuccess) {
+                this.alertService.successful("Expense updated successfully");
+                this.loadDebts(false);
+              } else {
+                this.alertService.warning("Error updating expense");
+              }
+
+            });
+          };
+
+          if (result.file) {
+            this.fileService.uploadFile2(result.file).url$.subscribe(updateDebtsEntity);
+
+          } else {
+            updateDebtsEntity(debts.imageUrl);
+          }
         }
       });
+    });
 
-
-    })
 
   }
 
   delete(id: string) {
-    AppComponent.viewSpinner = true;
-    this.debtsService.delete(this.userUid, id, this.token).subscribe(t => {
-      AppComponent.viewSpinner = false;
+    AppComponent.setViewSpinner(true);
+    this.loanService.delete(this.userUid, id, this.token).subscribe(t => {
+      AppComponent.setViewSpinner(false);
       if (t.isSuccess) {
         this.alertService.successful("add new expense");
         this.loadDebts(false);
@@ -178,9 +199,9 @@ export class DebtsComponent {
   }
 
   info(id: string) {
-    AppComponent.viewSpinner = true;
-    this.debtsService.getById(this.userUid, id, this.token).subscribe(t => {
-      AppComponent.viewSpinner = false;
+    AppComponent.setViewSpinner(true);
+    this.loanService.getById(this.userUid, id, this.token).subscribe(t => {
+      AppComponent.setViewSpinner(false);
       this.modalService.VerModalDebtsInfo(t);
     });
   }
@@ -233,8 +254,9 @@ export class DebtsComponent {
     MatFormFieldModule,
     MatSelectModule,
     FormsModule,
-    MatDatepickerModule
-  ],
+    MatDatepickerModule,
+    InputImageComponent
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalWidgets {
@@ -246,7 +268,9 @@ export class ModalWidgets {
   isEditingCreditor: boolean = false;
   amount: number = 0;
   description: string = '';
+  urlImage:string='';
   dateMaturity: string = '';
+  file:File|undefined;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { category: string[], payMethod: string[], bills: DebtsEntity }
@@ -258,6 +282,7 @@ export class ModalWidgets {
       this.selectedCreditor = this.debts.creditor;
       this.description = this.debts.description;
       this.dateMaturity=AppUtils.formatDate(this.debts.dateMaturity).slice(0,10);
+      this.urlImage=this.debts.imageUrl;
     }
 
   }
@@ -293,5 +318,9 @@ export class ModalWidgets {
     return this.amount != 0 && (this.selectedCreditor.trim() != "" && this.selectedCreditor.trim() != "Agregar nueva opción...");
   }
 
+  onPhotoChange(file: File) {
+    this.file=file;
+
+  }
 
 }

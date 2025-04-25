@@ -12,7 +12,7 @@ import { AlertService } from './alert.service';
 })
 export class ExpenseService {
 
-  private apiUrl = environment.BASE_API + '/bills';
+  private apiUrl = environment.BASE_API + '/expense';
   private cache$: BehaviorSubject<BillsEntity[] | null> = new BehaviorSubject<BillsEntity[] | null>(null);
 
   constructor(private http: HttpClient, private authService: AuthService, private alertService:AlertService) { }

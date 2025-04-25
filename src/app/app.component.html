@@ -1,6 +1,6 @@
 
 
-@if (viewSpinner) {
+@if (viewSpinner$ | async) {
   <div class="overlay">
     <div class="spinner-container">
         <mat-spinner></mat-spinner>
@@ -22,7 +22,7 @@
         <span>Home</span>
         <div class="link-effect"></div>
       </a>
-      <a href="#" class="nav-link">
+      <!--<a href="#" class="nav-link">
         <span>Products</span>
         <div class="link-effect"></div>
       </a>
@@ -37,7 +37,7 @@
       <a href="#" class="nav-link">
         <span>Contact</span>
         <div class="link-effect"></div>
-      </a>
+      </a>-->
     </div>
 
     <div class="nav-actions">
@@ -73,10 +73,11 @@
       </button>
     </div>
     <div class="menu-links">
-      <a href="#" class="menu-link active">
+      <a href="/user" class="menu-link active">
         <span>Home</span>
       </a>
-      <a href="#" class="menu-link">
+
+      <!--<a href="#" class="menu-link">
         <span>Products</span>
       </a>
       <a href="#" class="menu-link">
@@ -87,7 +88,7 @@
       </a>
       <a href="#" class="menu-link">
         <span>Contact</span>
-      </a>
+      </a>-->
     </div>
     <div class="menu-footer">
       @if (!isLoggedIn) {

@@ -2,16 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './service/auth.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, MatProgressSpinnerModule],
+  imports: [RouterOutlet, RouterModule, MatProgressSpinnerModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  public static viewSpinner=false;
+  //public static viewSpinner=false;
+  private static _viewSpinner = new BehaviorSubject<boolean>(false);
   constructor(
     private authService:AuthService,
   ){}
@@ -33,7 +36,15 @@ export class AppComponent {
   }
 
 
-  get viewSpinner(){
-    return AppComponent.viewSpinner;
+  static setViewSpinner(value: boolean) {
+    AppComponent._viewSpinner.next(value);
+  }
+
+  static get viewSpinner$(): Observable<boolean> {
+    return AppComponent._viewSpinner.asObservable();
+  }
+
+  get viewSpinner$(): Observable<boolean> {
+    return AppComponent._viewSpinner.asObservable();
   }
 }

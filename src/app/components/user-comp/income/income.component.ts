@@ -113,9 +113,11 @@ export class IncomeComponent {
           origin: result.origin
         }
 
-        AppComponent.viewSpinner = true;
+        AppComponent.setViewSpinner(true);
         this.incomeService.create(this.userUid, this.token, incomeEntity).subscribe(t => {
-          AppComponent.viewSpinner = false;
+          AppComponent.setViewSpinner(false);
+          console.log(t);
+
           if (t.isSuccess) {
             this.alertService.successful("add new expense");
             this.loadSaving(false);
@@ -129,9 +131,9 @@ export class IncomeComponent {
   }
 
   update(expenseId: string) {
-    AppComponent.viewSpinner = true;
+    AppComponent.setViewSpinner(true);
     this.incomeService.getById(this.userUid, expenseId, this.token).subscribe(expense => {
-      AppComponent.viewSpinner = false;
+      AppComponent.setViewSpinner(false);
       const dialogRef = this.dialog.open(ModalIncome, {
         data: {
           category: this.categoryList,
@@ -151,9 +153,9 @@ export class IncomeComponent {
             origin: result.origin
           }
 
-          AppComponent.viewSpinner = true;
+          AppComponent.setViewSpinner(true);
           this.incomeService.update(this.userUid, expenseId, this.token, incomeEntity).subscribe(t => {
-            AppComponent.viewSpinner = false;
+            AppComponent.setViewSpinner(false);
             if (t.isSuccess) {
               this.alertService.successful("update expense");
               this.loadSaving(false);
@@ -168,9 +170,9 @@ export class IncomeComponent {
   }
 
   delete(id: string) {
-    AppComponent.viewSpinner = true;
+    AppComponent.setViewSpinner(true);
     this.incomeService.delete(this.userUid, id, this.token).subscribe(t => {
-      AppComponent.viewSpinner = false;
+      AppComponent.setViewSpinner(false);
       if (t.isSuccess) {
         this.alertService.successful("add new expense");
         this.loadSaving(false);
@@ -182,9 +184,9 @@ export class IncomeComponent {
   }
 
   info(id: string) {
-    AppComponent.viewSpinner = true;
+    AppComponent.setViewSpinner(true);
     this.incomeService.getById(this.userUid, id, this.token).subscribe(t => {
-      AppComponent.viewSpinner = false;
+      AppComponent.setViewSpinner(false);
       this.modalService.VerModalIncomeInfo(t);
     });
   }

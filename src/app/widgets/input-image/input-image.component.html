@@ -1,0 +1,30 @@
+<div style="padding:20px">
+  <form id="editForm" name="editForm" [formGroup]="editForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Photo</mat-label>
+      <div class="fileUploadContainer" [ngStyle]="{'margin-top' : previewUrl ? '5px' :  '20px'}">
+
+        @if (previewUrl) {
+        <ng-container>
+          <img [src]="previewUrl" />
+          <button class="deleteButton" mat-icon-button
+            (click)="clearImage(fileInput)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </ng-container>
+        }
+
+        @if (!previewUrl) {
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+          <mat-icon style="opacity: 60%;">file_upload</mat-icon>
+          <button mat-raised-button color="primary" style="width:100%; opacity: 80%;">Browser</button>
+          <small style="margin: 20px">Drag and drop here</small>
+        </div>
+        }
+
+        <input #fileInput class="fileInput" type="file" accept="image/*" (change)="setFileData($event)" />
+      </div>
+      <input matInput formControlName="photo" readonly [hidden]="true" />
+    </mat-form-field>
+  </form>
+</div>

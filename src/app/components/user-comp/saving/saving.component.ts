@@ -98,9 +98,9 @@ export class SavingComponent implements OnInit {
           accountPlatform: result.accountPlatform
         }
 
-        AppComponent.viewSpinner = true;
+        AppComponent.setViewSpinner(true);
         this.savingService.create(this.userUid, this.token, savingEntity).subscribe(t => {
-          AppComponent.viewSpinner = false;
+          AppComponent.setViewSpinner(false);
           if (t.isSuccess) {
             this.alertService.successful("add new saving");
             this.loadSavings(false);
@@ -114,9 +114,9 @@ export class SavingComponent implements OnInit {
   }
 
   update(savingId: string) {
-    AppComponent.viewSpinner = true;
+    AppComponent.setViewSpinner(true);
     this.savingService.getById(this.userUid, savingId, this.token).subscribe(saving => {
-      AppComponent.viewSpinner = false;
+      AppComponent.setViewSpinner(false);
       const dialogRef = this.dialog.open(ModalSaving, {
         data: {
           accountPlatform: this.accountPlatformList,
@@ -134,9 +134,9 @@ export class SavingComponent implements OnInit {
             accountPlatform: result.accountPlatform
           }
 
-          AppComponent.viewSpinner = true;
+          AppComponent.setViewSpinner(true);
           this.savingService.update(this.userUid, savingId, this.token, savingEntity).subscribe(t => {
-            AppComponent.viewSpinner = false;
+            AppComponent.setViewSpinner(false);
             if (t.isSuccess) {
               this.alertService.successful("update saving");
               this.loadSavings(false);
@@ -151,9 +151,9 @@ export class SavingComponent implements OnInit {
   }
 
   delete(id: string) {
-    AppComponent.viewSpinner = true;
+    AppComponent.setViewSpinner(true);
     this.savingService.delete(this.userUid, id, this.token).subscribe(t => {
-      AppComponent.viewSpinner = false;
+      AppComponent.setViewSpinner(false);
       if (t.isSuccess) {
         this.alertService.successful("delete saving");
         this.loadSavings(false);
@@ -165,9 +165,9 @@ export class SavingComponent implements OnInit {
   }
 
   info(id: string) {
-    AppComponent.viewSpinner = true;
+    AppComponent.setViewSpinner(true);
     this.savingService.getById(this.userUid, id, this.token).subscribe(t => {
-      AppComponent.viewSpinner = false;
+      AppComponent.setViewSpinner(false);
       this.modalService.VerModalSavingInfo(t);
     });
   }

@@ -113,9 +113,9 @@ export class ExpenseComponent implements OnInit {
           payMethod: result.payMethod
         }
 
-        AppComponent.viewSpinner = true;
+        AppComponent.setViewSpinner(true);
         this.expenseService.create(this.userUid, this.token, billsEntity).subscribe(t => {
-          AppComponent.viewSpinner = false;
+          AppComponent.setViewSpinner(false);
           if (t.isSuccess) {
             this.alertService.successful("add new expense");
             this.loadBills(false);
@@ -129,9 +129,9 @@ export class ExpenseComponent implements OnInit {
   }
 
   update(expenseId: string) {
-    AppComponent.viewSpinner = true;
+    AppComponent.setViewSpinner(true);
     this.expenseService.getById(this.userUid, expenseId, this.token).subscribe(expense => {
-      AppComponent.viewSpinner = false;
+      AppComponent.setViewSpinner(false);
       const dialogRef = this.dialog.open(ModalWidgets, {
         data: {
           category: this.categoryList,
@@ -151,9 +151,9 @@ export class ExpenseComponent implements OnInit {
             payMethod: result.payMethod
           }
 
-          AppComponent.viewSpinner = true;
+          AppComponent.setViewSpinner(true);
           this.expenseService.update(this.userUid, expenseId, this.token, billsEntity).subscribe(t => {
-            AppComponent.viewSpinner = false;
+            AppComponent.setViewSpinner(false);
             if (t.isSuccess) {
               this.alertService.successful("update expense");
               this.loadBills(false);
@@ -171,9 +171,9 @@ export class ExpenseComponent implements OnInit {
   }
 
   delete(id: string) {
-    AppComponent.viewSpinner = true;
+    AppComponent.setViewSpinner(true);
     this.expenseService.delete(this.userUid, id, this.token).subscribe(t => {
-      AppComponent.viewSpinner = false;
+      AppComponent.setViewSpinner(false);
       if (t.isSuccess) {
         this.alertService.successful("add new expense");
         this.loadBills(false);
@@ -185,9 +185,9 @@ export class ExpenseComponent implements OnInit {
   }
 
   info(id: string) {
-    AppComponent.viewSpinner = true;
+    AppComponent.setViewSpinner(true);
     this.expenseService.getById(this.userUid, id, this.token).subscribe(t => {
-      AppComponent.viewSpinner = false;
+      AppComponent.setViewSpinner(false);
       this.modalService.VerModalBillsInfo(t);
     });
   }

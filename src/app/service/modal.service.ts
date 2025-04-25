@@ -143,6 +143,7 @@ export class ModalService {
                     <p><strong>Monto:</strong> ${debt.amount}</p>
                     <p><strong>Acreedor:</strong> ${debt.creditor}</p>
                     <p><strong>Fecha de Vencimiento:</strong> ${AppUtils.formatDate(debt.dateMaturity)}</p>
+                    <p><img src="${debt.imageUrl}" alt="Imagen de la deuda" style="width: 150px; height: auto;"></p>
                 </div>
             </div>
         </div>

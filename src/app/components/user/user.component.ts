@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgComponentOutlet, NgTemplateOutlet } from '@angular/common';
-import { DebtsComponent } from '../user-comp/debts/debts.component';
+import { DebtsComponent } from '../user-comp/loan/debts.component';
 import { IncomeComponent } from '../user-comp/income/income.component';
 import { SavingComponent } from '../user-comp/saving/saving.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -50,7 +50,7 @@ export class UserComponent implements OnInit {
         case 'income':
           this.selectedTemplate = this.incomeTemplate;
           break;
-        case 'debts':
+        case 'loan':
           this.selectedTemplate = this.debtsTemplate;
           break
         default:

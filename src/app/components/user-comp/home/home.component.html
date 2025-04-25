@@ -1,8 +1,10 @@
 
-<p>home works!</p>
 <app-pie-chart
 [single]="customSingle"
 [names]="['category']"
 [values]="['value']"
 (selectionChanged)="onSelectionChanged($event)"
 ></app-pie-chart>
+@if (isLoading) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
