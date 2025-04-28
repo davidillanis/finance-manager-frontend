@@ -1,0 +1,24 @@
+<div class="main">
+  <div class="div-body">
+    @for (item of [1]; track $index) {
+      <div class="card">
+        <div class="image-content">
+
+          <div class="card-image">
+            <img src="https://png.pngitem.com/pimgs/s/150-1503945_transparent-user-png-default-user-image-png-png.png"
+              alt="image" class="card-img">
+          </div>
+        </div>
+
+        <div class="card-content">
+          <h2 class="name">title</h2>
+          <p class="description">hay usuarios en este grupo</p>
+
+
+          <button class="button" (click)="verGrupo('group.id')">Ver Grupo</button>
+          <button class="button" (click)="unirseGrupo('group.id')">Unirse</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

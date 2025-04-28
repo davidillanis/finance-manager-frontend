@@ -1,0 +1,26 @@
+<div class="modal-container" style="text-align: center">
+  <h2 mat-dialog-title>Saving Group</h2>
+  <mat-dialog-content class="mat-typography">
+
+    <app-input-image (photoChange)="onPhotoChange($event)" [previewUrl]="urlImage"></app-input-image>
+
+    <mat-form-field floatLabel="always">
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="name" class="example-right-align" placeholder="name"/>
+    </mat-form-field><br>
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput [(ngModel)]="description"></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button
+      [mat-dialog-close]="{'name':name, 'file':file, 'description':description}"
+      [disabled]="!isDisabled()">
+      Save
+    </button>
+  </mat-dialog-actions>
+</div>

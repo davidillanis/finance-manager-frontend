@@ -6,4 +6,5 @@ export interface DebtsEntity {
     creditor:string;
     dateMaturity:string;
     imageUrl:string;
+    interestRate:number;
 }

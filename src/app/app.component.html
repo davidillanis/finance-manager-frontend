@@ -1,11 +1,9 @@
-
-
 @if (viewSpinner$ | async) {
-  <div class="overlay">
-    <div class="spinner-container">
-        <mat-spinner></mat-spinner>
-    </div>
+<div class="overlay">
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
   </div>
+</div>
 }
 
 <div class="container">
@@ -22,35 +20,26 @@
         <span>Home</span>
         <div class="link-effect"></div>
       </a>
-      <!--<a href="#" class="nav-link">
-        <span>Products</span>
+
+      @if (isLoggedIn) {
+      <a href="/social" class="nav-link active">
+        <span>Social</span>
         <div class="link-effect"></div>
       </a>
-      <a href="#" class="nav-link">
-        <span>Services</span>
-        <div class="link-effect"></div>
-      </a>
-      <a href="#" class="nav-link">
-        <span>About</span>
-        <div class="link-effect"></div>
-      </a>
-      <a href="#" class="nav-link">
-        <span>Contact</span>
-        <div class="link-effect"></div>
-      </a>-->
+      }
     </div>
 
     <div class="nav-actions">
       @if (!isLoggedIn) {
-        <button class="action-btn" routerLink="/login">
-          <div class="btn-text">Login</div>
-          <div class="btn-effect"></div>
-        </button>
+      <button class="action-btn" routerLink="/login">
+        <div class="btn-text">Login</div>
+        <div class="btn-effect"></div>
+      </button>
       }@else {
-        <button class="action-btn" (click)="logOut()">
-          <div class="btn-text">Exit</div>
-          <div class="btn-effect"></div>
-        </button>
+      <button class="action-btn" (click)="logOut()">
+        <div class="btn-text">Exit</div>
+        <div class="btn-effect"></div>
+      </button>
       }
 
     </div>
@@ -76,6 +65,11 @@
       <a href="/user" class="menu-link active">
         <span>Home</span>
       </a>
+      @if(isLoggedIn) {
+      <a href="/social" class="menu-link active">
+        <span>Social</span>
+      </a>
+      }
 
       <!--<a href="#" class="menu-link">
         <span>Products</span>

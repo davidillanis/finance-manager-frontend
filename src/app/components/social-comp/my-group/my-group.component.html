@@ -1,0 +1,44 @@
+<img class="cover-image" src="{{ groupEntity?.imageUrl }}" />
+
+<div class="container">
+  <div class="header">
+    <h1 class="group-name">{{ groupEntity?.name }}</h1>
+    <h4 class="group-name">{{ groupEntity?.description }}</h4>
+    <p class="group-members">
+      - Grupo - Hay {{ groupEntity?.members?.length }} miembros
+    </p>
+    <div class="action-buttons">
+      @if (isOwner$ | async) {
+        <button class="btn btn-primary" (click)="openInviteDialog()">+ Agregar</button>
+      }
+      <button class="btn btn-secondary">+ Compartir</button>
+      <button class="btn btn-member">Eres miembro</button>
+    </div>
+
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+
+      <mat-tab label="Loan">
+        <app-table-loan
+        [groupId]="groupId"
+        [showActions]="isOwner$"
+        ></app-table-loan>
+      </mat-tab>
+      <!--<mat-tab label="Income"> </mat-tab>
+      <mat-tab label="Expenses"> </mat-tab>
+      <mat-tab label="Savings"> </mat-tab>-->
+      <mat-tab label="Members">
+        <div class="user-list">
+          @for (uid of groupEntity?.members; track $index) {
+            <div class="user-item">
+              <img [src]="usersMap.get(uid)?.imageUrl" alt="User Image" class="user-image">
+              <div class="user-info">
+                <p class="user-name">{{ usersMap.get(uid)?.firstName}} {{ usersMap.get(uid)?.lastName}}</p>
+                <p class="user-role">{{ usersMap.get(uid)?.role}}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

@@ -9,22 +9,46 @@ export class AlertService {
   constructor() { }
 
   successful(message: string) {
-    this.alert("¡Operación exitosa!", message, 'success', '#1F8EF1', 'Aceptar', 2600);
+    return this.alert("¡Operación exitosa!", message, 'success', '#1F8EF1', 'Aceptar', 2600);
   }
   successfulCallback(message: string, onClose: () => void = () => { }) {
-    this.alertCallback("¡Operación exitosa!", message, 'success', '#1F8EF1', 'Aceptar', 2600, onClose);
+    return this.alertCallback("¡Operación exitosa!", message, 'success', '#1F8EF1', 'Aceptar', 2600, onClose);
   }
 
   error(message: string) {
-    this.alert("Error", message, 'error', '#f91919', 'Aceptar', 2600);
+    return this.alert("Error", message, 'error', '#f91919', 'Aceptar', 2600);
   }
 
   warning(message: string) {
-    this.alert("Warning", message, 'warning', '#decf22', 'Entendido');
+    return this.alert("Warning", message, 'warning', '#decf22', 'Entendido');
   }
 
+  question(
+    title: string,
+    text: string = "",
+    confirmButtonText: string = "Sí, confirmar",
+    cancelButtonText: string = "Cancelar"
+  ) {
+    return Swal.fire({
+      title,
+      text,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#6A0DAD',
+      cancelButtonColor: '#d33',
+      confirmButtonText,
+      cancelButtonText,
+      background: '#1c1c1c',
+      color: '#ffffff',
+      customClass: {
+        popup: 'swal2-rounded',
+      }
+    });
+  }
+
+
   alert(title: string, text: string, icon: SweetAlertIcon, color: string, confirmButtonText: string = 'Continuar', timer: number | undefined = undefined) {
-    Swal.fire({
+    return Swal.fire({
       title: title,
       text: text,
       icon: icon,
@@ -63,8 +87,8 @@ export class AlertService {
     });
   }
 
-  alertCallback(title: string,text: string,icon: SweetAlertIcon,color: string, confirmButtonText: string = 'Continuar',timer: number = 1600, onClose: () => void = () => { } ) {
-    Swal.fire({
+  alertCallback(title: string, text: string, icon: SweetAlertIcon, color: string, confirmButtonText: string = 'Continuar', timer: number = 1600, onClose: () => void = () => { }) {
+    return Swal.fire({
       title: title,
       text: text,
       icon: icon,

@@ -9,26 +9,24 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LoanGroupService } from '../../service/loan-group.service';
-import { AuthService } from '../../service/auth.service';
-import { DebtsEntity } from '../../model/debts-entity';
-import { AppUtils } from '../../util/other/app-utils';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { InputImageComponent } from '../../widgets/input-image/input-image.component';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { AppComponent } from '../../app.component';
-import { AlertService } from '../../service/alert.service';
-import { FileService } from '../../service/file.service';
-import { ModalService } from '../../service/modal.service';
+import { LoanGroupService } from '../../../service/loan-group.service';
+import { AuthService } from '../../../service/auth.service';
+import { AlertService } from '../../../service/alert.service';
+import { FileService } from '../../../service/file.service';
+import { ModalService } from '../../../service/modal.service';
+import { DebtsEntity } from '../../../model/debts-entity';
+import { AppUtils } from '../../../util/other/app-utils';
+import { AppComponent } from '../../../app.component';
+import { InputImageComponent } from '../../../widgets/input-image/input-image.component';
 
 @Component({
-  selector: 'app-test',
+  selector: 'app-table-loan',
   standalone: true,
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.css'],
   imports: [
     CommonModule,
     MatTableModule,
@@ -39,9 +37,11 @@ import { ModalService } from '../../service/modal.service';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule
-  ]
+  ],
+  templateUrl: './table-loan.component.html',
+  styleUrl: './table-loan.component.css'
 })
-export class TestComponent implements OnInit, AfterViewInit {
+export class TableLoanComponent implements OnInit, AfterViewInit {
   @Input() showActions = new Observable<boolean>();
   @Input() groupId = "0VfjSFu5qYZkP7NAn4V4";
 
@@ -80,7 +80,7 @@ export class TestComponent implements OnInit, AfterViewInit {
     this.columnHeaders = { dateMaturity: 'dateMaturity', amount: 'amount', creditor: 'creditor' };
 
     this.actualDisplayedColumns = this.showActions
-      ? [...this.displayedColumns, 'actions']
+      ? ['counter', ...this.displayedColumns, 'imagen', 'actions']
       : this.displayedColumns;
 
     this.loadData();
@@ -94,7 +94,7 @@ export class TestComponent implements OnInit, AfterViewInit {
   loadData() {
     this.isLoading = true;
     this.tableData$.subscribe(data => {
-      data.map(t => t.dateMaturity = AppUtils.formatDate(t.dateMaturity));
+      data.map(t => t.dateMaturity = AppUtils.formatDate(t.dateMaturity).slice(0, 10));
       this.dataSource.data = data;
       if (this.paginator) {
         this.paginator.firstPage();
@@ -197,8 +197,16 @@ export class TestComponent implements OnInit, AfterViewInit {
     );
   }
 
+  onImageRow(url:string, date:string) {
+    this.modalService.VerModalImagen(url, 'Loan Image in '+ this.formatDate(date));
+  }
+
   onInfoRow(row: any) {
-    this.modalService.VerModalDebtsInfo(row);
+    AppComponent.setViewSpinner(true);
+    this.loanGroupService.getById(this.groupId, row.id, this.token).subscribe(t => {
+      AppComponent.setViewSpinner(false);
+      this.modalService.VerModalDebtsInfo(t);
+    })
   }
 
   formatDate(date: string) {
@@ -297,5 +305,6 @@ export class ModalWidgets {
     this.file = file;
   }
 }
+
 
 

@@ -10,7 +10,7 @@
   <input type="text" class="search-input" placeholder="Search..." />
   <button class="search-button">🔍</button>
 </div>
-@if (isLoading) {
+@if (isLoading | async) {
 <p>Cargando...</p>
 }
 <section class="table-section">

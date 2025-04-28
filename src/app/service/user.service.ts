@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserEntity } from '../model/user-entity';
@@ -13,23 +13,26 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getList(): Observable<UserEntity[]> {
+  getList(token:string): Observable<UserEntity[]> {
     let url = this.apiUrl + "/list";
-    return this.httpClient.get<UserEntity[]>(`${url}`);
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+
+    return this.httpClient.get<UserEntity[]>(`${url}`, { headers: headers });
   }
 
   getUsersPaged(limit: number = 10, lastDocumentId?: string): Observable<UserEntity[]> {
     let url = `${this.apiUrl}/list/paged`;
     let params: HttpParams = new HttpParams().set('limit', limit);
     if (lastDocumentId) {
-      params = params.set('lastDocumentId', lastDocumentId); 
+      params = params.set('lastDocumentId', lastDocumentId);
     }
     return this.httpClient.get<UserEntity[]>(url, { params });
   }
 
-  getUserById(id: string): Observable<UserEntity> {
-    let url = this.apiUrl + "byId/" + id;
-    return this.httpClient.get<UserEntity>(url);
+  getUserById(id: string, token:string): Observable<UserEntity> {
+    let url = this.apiUrl + "/byId/" + id;
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+    return this.httpClient.get<UserEntity>(url,  { headers: headers });
   }
 
   createUser(user: UserEntity, uid:string): Observable<any> {

@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="spawn-navbar"></div>
+  <div class="navbar">
+    <br />
+    <input type="button" name="" id="" value="Nuevo Grupo" class="button max-width" (click)="newGroup()" />
+    <div class="divider"></div>
+
+    <h1 class="title">This Groups</h1>
+
+    <div class="list-group">
+      @for (item of myGroupList; track $index) {
+      <button class="group" (click)="routeMyGroup(item.id)">
+        <div class="group-header">
+          <img class="group-icon" [src]="item.imageUrl? item.imageUrl: 'https://cdn-icons-png.flaticon.com/512/149/149071.png'" alt="Grupo" />
+          <span class="group-name">{{ item.name }}</span>
+
+          @if (item.owner==userUid) {
+            <div class="group-header-right">
+              <button class="button-edit" (click)="updateGroup(item, item.id)">
+                <img src="/images/edit.svg" class="icon-button">
+              </button>
+            </div>
+          }
+
+        </div>
+        <div class="group-info">
+          <span class="activity-status">Have {{item.members.length}} users in the group</span>
+        </div>
+      </button>
+      }
+    </div>
+  </div>
+
+  <div class="container-template">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

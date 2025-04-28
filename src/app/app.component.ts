@@ -30,7 +30,6 @@ export class AppComponent {
     this.authService.logOut();
   }
 
-
   get isLoggedIn() {
     return this.authService.isLoggedIn
   }

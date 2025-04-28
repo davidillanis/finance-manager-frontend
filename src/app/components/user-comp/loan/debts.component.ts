@@ -19,6 +19,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { LoanService } from '../../../service/loan.service';
 import { InputImageComponent } from "../../../widgets/input-image/input-image.component";
 import { FileService } from '../../../service/file.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-debts',
@@ -31,7 +32,8 @@ export class DebtsComponent {
   protected userUid = "";
   protected token = "";
   protected limit = 100;
-  isLoading = false;
+  //isLoading = false;
+  isLoading = new BehaviorSubject<boolean>(false);
   debtsList: DebtsEntity[] = [];
   creditorList: string[] = [];
   customSingle: { name: string, value: number }[] = [];
@@ -42,31 +44,29 @@ export class DebtsComponent {
     private authService: AuthService,
     private alertService: AlertService,
     private modalService: ModalService,
-    private fileService:FileService
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
     this.userUid = this.authService.getUser()?.uid + "";
     this.token = this.authService.getUser()?.stsTokenManager.accessToken + "";
 
-    this.loanService.setValuesPerField(this.userUid, "creditor", this.token).subscribe(t => this.creditorList = t?t:[])
+    this.loanService.setValuesPerField(this.userUid, "creditor", this.token).subscribe(t => this.creditorList = t ? t : [])
     this.loadDebts();
   }
 
   loadDebts(usingCache: boolean = true): void {
-
-    this.isLoading = true;
+    this.isLoading.next(true);
 
     this.loanService.list(this.userUid, this.token, this.limit, usingCache).subscribe(
       (data) => {
         this.debtsList = data;
         this.updateCustomSingle();
-        this.isLoading = false;
       },
       (error) => {
         console.error('Error loading bills', error);
-        this.isLoading = false;
-      }
+      },
+      () => this.isLoading.next(false)
     );
   }
 
@@ -76,6 +76,7 @@ export class DebtsComponent {
 
   updateCustomSingle(): void {
     this.customSingle = [];
+
     this.debtsList.forEach(expense => {
       const existingCategory = this.customSingle.find(item => item.name === expense.creditor);
       if (existingCategory) {
@@ -101,31 +102,37 @@ export class DebtsComponent {
     const dialogRef = this.dialog.open(ModalWidgets, { data: { category: this.creditorList } });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result != undefined) {
+      if (result) {
         AppComponent.setViewSpinner(true);
-        this.fileService.uploadFile2(result.file).url$.subscribe(url=>{
-          let debtsEntity: DebtsEntity = {
+
+        const createDebt = (imageUrl: string) => {
+          const debtsEntity: DebtsEntity = {
             id: '',
             date: '',
             description: result.description,
             amount: result.amount,
             creditor: result.creditor,
             dateMaturity: AppUtils.formatDate(result.dateMaturity).slice(0, 10),
-            imageUrl: url
-          }
+            imageUrl: imageUrl,
+            interestRate: result.interestRate
+          };
 
           this.loanService.create(this.userUid, this.token, debtsEntity).subscribe(t => {
-            if (t.isSuccess) {
             AppComponent.setViewSpinner(false);
-
-              this.alertService.successful("add new expense");
+            if (t.isSuccess) {
+              this.alertService.successful("Added new expense");
               this.loadDebts(false);
-            }
-            else {
-              this.alertService.warning("Error in saving data")
+            } else {
+              this.alertService.warning("Error saving data");
             }
           });
-        })
+        };
+
+        if (result.file) {
+          this.fileService.uploadFile2(result.file).url$.subscribe(url => createDebt(url));
+        } else {
+          createDebt(''); // Si no hay archivo, enviamos un imageUrl vacío o puedes manejarlo de otra forma
+        }
       }
     });
   }
@@ -155,7 +162,8 @@ export class DebtsComponent {
               amount: result.amount,
               creditor: result.creditor,
               dateMaturity: AppUtils.formatDate(result.dateMaturity).slice(0, 10),
-              imageUrl: imageUrl
+              imageUrl: imageUrl,
+              interestRate: result.interestRate
             };
 
             this.loanService.update(this.userUid, expenseId, this.token, debtsEntity).subscribe(response => {
@@ -207,10 +215,6 @@ export class DebtsComponent {
   }
 
   onSelectionChanged(selection: { name: string, value: string }) {
-    //console.log('Selected Name:', selection.name);
-    //console.log('Selected Value:', selection.value);
-    // Aquí puedes manejar la lógica que necesites con los datos seleccionados
-
     this.customSingle = [];
     this.debtsList.forEach(debts => {
       let selectValue: string;
@@ -220,10 +224,10 @@ export class DebtsComponent {
           selectValue = debts.creditor;
           break;
         case 'date':
-          selectValue = AppUtils.formatDate(debts.date).slice(0,10);
+          selectValue = AppUtils.formatDate(debts.date).slice(0, 10);
           break;
         case 'dateMaturity':
-          selectValue = AppUtils.formatDate(debts.dateMaturity).slice(0,10);
+          selectValue = AppUtils.formatDate(debts.dateMaturity).slice(0, 10);
           break;
         default:
           selectValue = debts.creditor;
@@ -256,11 +260,10 @@ export class DebtsComponent {
     FormsModule,
     MatDatepickerModule,
     InputImageComponent
-],
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalWidgets {
-
   creditors: string[];
   debts: DebtsEntity;
   selectedCreditor: string = '';
@@ -268,9 +271,10 @@ export class ModalWidgets {
   isEditingCreditor: boolean = false;
   amount: number = 0;
   description: string = '';
-  urlImage:string='';
+  urlImage: string = '';
   dateMaturity: string = '';
-  file:File|undefined;
+  interestRate: number = 0;
+  file: File | undefined;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { category: string[], payMethod: string[], bills: DebtsEntity }
@@ -281,8 +285,9 @@ export class ModalWidgets {
       this.amount = this.debts.amount;
       this.selectedCreditor = this.debts.creditor;
       this.description = this.debts.description;
-      this.dateMaturity=AppUtils.formatDate(this.debts.dateMaturity).slice(0,10);
-      this.urlImage=this.debts.imageUrl;
+      this.dateMaturity = AppUtils.formatDate(this.debts.dateMaturity).slice(0, 10);
+      this.urlImage = this.debts.imageUrl;
+      this.interestRate = this.debts.interestRate;
     }
 
   }
@@ -315,12 +320,11 @@ export class ModalWidgets {
   }
 
   isDisabled() {
-    return this.amount != 0 && (this.selectedCreditor.trim() != "" && this.selectedCreditor.trim() != "Agregar nueva opción...");
+    return this.amount != 0 && this.interestRate != 0 && (this.selectedCreditor.trim() != "" && this.selectedCreditor.trim() != "Agregar nueva opción...");
   }
 
   onPhotoChange(file: File) {
-    this.file=file;
-
+    this.file = file;
   }
 
 }

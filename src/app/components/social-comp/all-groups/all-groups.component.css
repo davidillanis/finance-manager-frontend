@@ -1,0 +1,97 @@
+.main {
+  display: flex;
+  justify-content: center;
+  width: 80%;
+}
+
+.div-body {
+  max-width: 95%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 350px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 20px rgba(0, 0, 0, 0.15);
+}
+
+.image-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+  position: relative;
+  background: linear-gradient(135deg, #4070f4, #265df2);
+  width: 100%;
+}
+
+.card-image {
+  position: relative;
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  background: #ffffff;
+  padding: 5px;
+  z-index: 2;
+}
+
+.card-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333333;
+  margin-top: 10px;
+}
+
+.description {
+  font-size: 14px;
+  color: #555555;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.button {
+  border: none;
+  font-size: 16px;
+  color: #ffffff;
+  padding: 10px 20px;
+  background-color: #4070f4;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #265df2;
+}
+
+.button:active {
+  background-color: #132f7c;
+}

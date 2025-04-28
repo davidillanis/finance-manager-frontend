@@ -39,10 +39,23 @@
             <td mat-cell *matCellDef="let row" >{{ row[column] }}</td>
           </ng-container>
         }
+
+
+        <ng-container matColumnDef="imagen">
+          <th mat-header-cell *matHeaderCellDef>Imagen</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+
+            <button mat-icon-button class="view-button" (click)="onImageRow(row.imageUrl, row.date)" [disabled]="isLoading">
+              <mat-icon>image</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="actions-header">Actions</th>
           <td mat-cell *matCellDef="let row" class="actions-cell">
-            @if (showActions) {
+            @if (showActions | async) {
               <button mat-icon-button color="primary" (click)="onEditRow(row)" [disabled]="isLoading">
                 <mat-icon>edit</mat-icon>
               </button>
@@ -51,7 +64,7 @@
               </button>
             }
 
-            <button mat-icon-button color="accent" (click)="onEditRow(row)" [disabled]="isLoading">
+            <button mat-icon-button color="accent" (click)="onInfoRow(row)" [disabled]="isLoading">
               <mat-icon>info</mat-icon>
             </button>
           </td>
