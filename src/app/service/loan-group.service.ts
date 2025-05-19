@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { DebtsEntity } from '../model/debts-entity';
 
@@ -24,15 +24,21 @@ export class LoanGroupService {
     let url = `${this.apiUrl}/list?groupId=${groupId}&limit=${limit}`;
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-    return this.http.get<DebtsEntity[]>(url, { headers }).pipe(
+    return this.http.get<DebtsEntity[]>(url, { headers, observe: 'response'}).pipe(
+      map(response => {
+        if (response.status === 204) {
+          return [];
+        }
+        return response.body || [];
+      }),
       tap(data => this.cache$.next(data)),
       catchError(error => {
-        console.error("Error fetching bills:", error)
-        //this.authService.logOutConfig("This session expired", "", 'warning', 'yellow', "Accept", undefined, () => location.reload());
+        console.error("Error fetching bills:", error);
+        this.authService.logOutConfig("This session expired", "", 'warning', 'yellow', "Accept", undefined, () => location.reload());
         return of([]);
       })
     );
-  }
+}
 
   getById(groupID: string, id: string, token: string): Observable<DebtsEntity> {
     const params = new HttpParams().set('groupId', groupID);

@@ -4,8 +4,7 @@ import { GroupService } from '../../../service/group.service';
 import { AuthService } from '../../../service/auth.service';
 import { GroupEntity } from '../../../model/group-entity';
 import { MatTabsModule } from '@angular/material/tabs';
-import { Observable, of } from 'rxjs';
-import { TableComponent } from "../../../widgets/table/table.component";
+import { Observable, of, Subject } from 'rxjs';
 import { TableLoanComponent } from "../table-loan/table-loan.component";
 import { MatDialog } from '@angular/material/dialog';
 import { InviteUserDialogComponent } from '../invite-user-dialog/invite-user-dialog.component';
@@ -26,6 +25,9 @@ export class MyGroupComponent implements OnInit {
   protected token = "";
   groupEntity: GroupEntity | undefined;
   usersMap = new Map<string, UserEntity>();
+  //update table
+  private reloadTableSubject = new Subject<void>();
+  reloadTable$ = this.reloadTableSubject.asObservable();
 
   constructor(
     private route: ActivatedRoute,
@@ -47,6 +49,8 @@ export class MyGroupComponent implements OnInit {
       this.groupService.getById(this.groupId, this.token).subscribe(t => {
         this.groupEntity = t;
         this.groupEntity?.members.forEach(uid=>this.userService.getUserById(uid, this.token).subscribe(user=>this.usersMap.set(uid, user)));
+
+        this.reloadTableSubject.next();
       });
     });
   }
